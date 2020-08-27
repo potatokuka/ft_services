@@ -1,0 +1,19 @@
+FROM alpine:3.12
+
+LABEL maintainer greed
+
+RUN apk --no-cache update && \
+	apk --no-cache upgrade && \
+	apk add --no-cache vsftpd
+
+COPY ./srcs/vsftpd.conf /etc/vsftpd/vsftpd.conf
+COPY ./srcs/ftps.cert /etc/ssl/certs/ftps.cert
+COPY ./srcs/ftps.key /etc/ssl/certs/ftps.key
+
+RUN		mkdir -p /var/ftp && \
+		adduser -D -h /var/ftp ftps_user && \
+		echo "ftps_user:pass" | chpasswd
+
+EXPOSE 21 20 30000
+
+CMD ["vsftpd", "/etc/vsftpd/vsftpd.conf"]
