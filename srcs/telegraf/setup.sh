@@ -1,2 +1,0 @@
-exec /usr/bin/telegraf $@
- 
