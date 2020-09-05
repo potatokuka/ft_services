@@ -16,7 +16,7 @@ kind: Service
 metadata:
   name: wordpress-svc
   annotations:
-    metallb.universe.tf/address-pool: wp-ip
+    metallb.universe.tf/address-pool: default
   labels:
     app: wordpress-deployment
 spec:
@@ -67,3 +67,13 @@ spec:
       - name: wordpress-persistent-storage
         persistentVolumeClaim:
           claimName: wordpress-pv-claim
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: wordpress-secret
+type: Opaque
+stringData:
+  WP_TITLE: Wordpress
+  WP_USER: admin
+  WP_PASSWORD: pass

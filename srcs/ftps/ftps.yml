@@ -1,0 +1,69 @@
+# ---------- Service ---------- #
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  annotations:
+    metallb.universe.tf/address-pool: default
+  labels:
+    app: ftps
+  name: ftps-svc
+spec:
+  ports:
+    - name: command-ctrl
+      port: 20
+      targetPort: 20
+    - name: data-transfer
+      port: 21
+      targetPort: 21
+    - name: pasv-port
+      port: 30000
+      targetPort: 30000
+  selector:
+    app: ftps
+  type: LoadBalancer
+status:
+  loadBalancer: {}
+
+---
+
+# ---------- Deployment ---------- #
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: ftps
+  name: ftps
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ftps
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: ftps
+    spec:
+      containers:
+      - image: ftps
+        name: ftps
+        imagePullPolicy: Never
+        envFrom:
+        - secretRef:
+            name: ftps-secret
+        resources: {}
+status: {}
+
+---
+
+apiVersion: v1
+kind: Secret
+metadata:
+  name: ftps-secret
+type: Opaque
+stringData:
+  FTPS_USER: admin
+  FTPS_PASSWORD: pass

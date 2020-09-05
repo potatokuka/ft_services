@@ -11,10 +11,9 @@ if [ $? == 1 ]; then
 	wp user create "fran" "dude@example.com" --role="dude" --user_pass="pass"
 	wp user create "bruce" "man@example.com" --role="man" --user_pass="pass"
 
-	wp theme install twentyten
-	wp theme install twentytwenty
-	wp theme activate twentyten
-	wp plugin install woocommerce
-else
-	echo "WordPress has already been installed in /www"
+    wp theme install winter
+    wp theme install twentyten
+    wp theme install twentytwenty
+    wp theme activate twentytwenty
+    wp plugin install woocommerce
 fi

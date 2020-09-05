@@ -1,3 +1,5 @@
+envsubst '${DB_USER} ${DB_PASSWORD}' < /tmp/my.cnf > /etc/my.cnf
+
 mysql_install_db --user=mysql --ldata=/var/lib/mysql
 
 # allow local dbg

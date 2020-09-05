@@ -46,3 +46,14 @@ spec:
   type: LoadBalancer
 status:
   loadBalancer: {}
+
+---
+
+apiVersion: v1
+kind: Secret
+metadata:
+  name: ssh-secret
+type: Opaque
+stringData:
+  SSH_USERNAME: user
+  SSH_PASSWORD: pass

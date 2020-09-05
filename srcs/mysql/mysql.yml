@@ -53,6 +53,19 @@ spec:
 
 ---
 apiVersion: v1
+kind: Secret
+metadata:
+  name: mysql-secret
+type: Opaque
+stringData:
+  DB_NAME: wordpress
+  DB_USER: mysql
+  DB_PASSWORD: pass
+  DB_HOST: mysql-svc
+  MYSQL_HOME: /etc/
+
+---
+apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: mysql-pv-claim
