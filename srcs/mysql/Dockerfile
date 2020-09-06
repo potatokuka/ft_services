@@ -16,8 +16,6 @@ COPY ./srcs/startup.sh /tmp/startup.sh
 COPY ./srcs/my.cnf /tmp/
 COPY ./srcs/create_tables.sql /tmp/
 
-RUN envsubst ${DB_USER} ${DB_PASSWORD} < /tmp/my.cnf > /etc/my.cnf
-
 #alpine-linux runs a deprecated version of mysql, that doesnt have the --initialize option for mysqld
 #instead we need to use the mysql_install_db command to install the default mysql database
 

@@ -7,7 +7,7 @@ define( 'DB_NAME', '${DB_NAME}' );
 define( 'DB_USER', '${DB_USER}' );
 
 /** MySQL database password */
-define( 'DB_PASSWORD', '${DB_PASS}');
+define( 'DB_PASSWORD', '${DB_PASSWORD}');
 
 /** MySQL hostname */
 define( 'DB_HOST', '${DB_HOST}' );
@@ -21,7 +21,7 @@ define( 'DB_CHARSET', 'utf8' );
 /** The Database Collate type. Don't change this if in doubt. */
 define( 'DB_COLLATE', '' );
 
-define('AUTHOR', 'greed');
+define('AUTHOR', 'admin');
 
 /**#@+
  * Authentication Unique Keys and Salts.

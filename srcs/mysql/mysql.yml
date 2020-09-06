@@ -11,7 +11,46 @@ spec:
   ports:
   - name: mysql-port
     port: 3306
-
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mysql-data
+  labels:
+    app: mysql
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/mnt/mysql-data"
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-claim
+  labels:
+    app: mysql
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mysql-secret
+type: Opaque
+stringData:
+  DB_NAME: wordpress
+  DB_USER: mysql
+  DB_PASSWORD: pass
+  DB_HOST: mysql-svc
+  MYSQL_HOME: /etc/
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -33,47 +72,14 @@ spec:
       containers:
       - name: mysql-host
         image: mysql
-        imagePullPolicy: IfNotPresent
-        env:
-        - name: DB_NAME
-          value: wordpress
-        - name: DB_USER
-          value: mysql
-        - name: DB_PASS
-          value: pass
-        - name: MYSQL_HOME
-          value: "/etc/"
+        imagePullPolicy: Never
+        envFrom:
+          - secretRef:
+              name: mysql-secret
         volumeMounts:
         - name: mysql-persistent-storage
           mountPath: /var/lib/mysql
       volumes:
       - name: mysql-persistent-storage
         persistentVolumeClaim:
-          claimName: mysql-pv-claim
-
----
-apiVersion: v1
-kind: Secret
-metadata:
-  name: mysql-secret
-type: Opaque
-stringData:
-  DB_NAME: wordpress
-  DB_USER: mysql
-  DB_PASSWORD: pass
-  DB_HOST: mysql-svc
-  MYSQL_HOME: /etc/
-
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: mysql-pv-claim
-  labels:
-    app: mysql
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 1Gi
+          claimName: mysql-claim

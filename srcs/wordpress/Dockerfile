@@ -15,11 +15,10 @@ RUN apk update --no-cache && \
 RUN adduser -D -g 'www' www
 RUN mkdir /www
 
+COPY ./srcs/*.sh /tmp/
 COPY ./srcs/wp-config.php /tmp/wp-config.php
-COPY ./srcs/wpinstall.sh /tmp/wpinstall.sh
 COPY ./srcs/nginx.conf /etc/nginx/nginx.conf
 COPY ./srcs/supervisord.conf /etc/supervisord.conf
-COPY ./srcs/*.sh /tmp/
 
 # Make sure that our ssh daemon keeps restarting
 RUN sed -i 's/;daemonize = yes/daemonize = no/g' /etc/php7/php-fpm.conf

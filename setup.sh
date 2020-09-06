@@ -67,6 +67,7 @@ fi
 #docker build -t nginx_alpine ./srcss/nginx
 
 kubectl apply -f ./srcs/metallb/metallb-config.yml
+kubectl apply -f ./srcs/read_permissions.yml
 start_app "nginx" "./srcs/nginx" "./srcs/nginx/nginx.yml" "$DEBUG"
 start_app "ftps" "./srcs/ftps" "./srcs/ftps/ftps.yml" "$DEBUG"
 start_app "mysql" "./srcs/mysql" "./srcs/mysql/mysql.yml"

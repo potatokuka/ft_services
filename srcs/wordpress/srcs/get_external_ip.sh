@@ -1,5 +1,4 @@
 #!/bin/sh
-#!!!!THIS SCRIPT REQUIRES JQ AND CURL!!!!
 # Point to the internal API server hostname
 APISERVER=https://kubernetes.default.svc
 

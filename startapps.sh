@@ -36,8 +36,9 @@ start_app () {
 #ln -s ~/goinfre/.minikube ~/.minikube
 
 :> errlog.txt
-:> log.log
 #sh cleanup.sh >> log.log 2>> /dev/null
+
+#---------------------------------CLUSTER START---------------------------------#
 
 #----------------------------------BUILD AND DEPLOY----------------------------------#
 
@@ -55,8 +56,12 @@ fi
 #docker build -t nginx_alpine ./srcss/nginx
 
 kubectl apply -f ./srcs/metallb/metallb-config.yml
-start_app "nginx" "./srcs/nginx" "./srcs/nginx.yml" "$DEBUG"
-start_app "ftps" "./srcs/ftps" "./srcs/ftps.yml" "$DEBUG"
-start_app "mysql" "./srcs/mysql" "./srcs/mysql/mysql.yml"
-start_app "wordpress" "./srcs/wordpress" "./srcs/wordpress/wordpress.yml"
-start_app "phpmyadmin" "./srcs/phpmyadmin" "./srcs/phpmyadmin/phpmyadmin.yml"
+kubectl apply -f ./srcs/read_permissions.yml
+start_app "nginx" "./srcs/nginx" "./srcs/nginx/nginx.yml" "$DEBUG"
+start_app "ftps" "./srcs/ftps" "./srcs/ftps/ftps.yml" "$DEBUG"
+start_app "mysql" "./srcs/mysql" "./srcs/mysql/mysql.yml" "$DEBUG"
+start_app "wordpress" "./srcs/wordpress" "./srcs/wordpress/wordpress.yml" "$DEBUG"
+start_app "phpmyadmin" "./srcs/phpmyadmin" "./srcs/phpmyadmin/phpmyadmin.yml" "$DEBUG"
+start_app "telegraf" "./srcs/telegraf" "./srcs/telegraf/telegraf.yml" "$DEBUG"
+start_app "influxdb" "./srcs/influxdb" "./srcs/influxdb/influxdb.yml" "$DEBUG"
+start_app "grafana" "./srcs/grafana" "./srcs/grafana/grafana.yml" "$DEBUG"
