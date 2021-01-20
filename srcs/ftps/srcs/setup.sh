@@ -7,7 +7,6 @@ do
 done
 echo "Found IP: $PASV_ADDR"
 #configure vsftpd
-echo "$FTPS_USERNAME" > /tmp/usernamez.sh
 envsubst '${PASV_ADDR}' < /tmp/vsftpd.conf > /etc/vsftpd/vsftpd.conf
 rm /tmp/vsftpd.conf
 #add user pass
