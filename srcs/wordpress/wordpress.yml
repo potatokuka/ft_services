@@ -4,9 +4,9 @@ kind: Service
 metadata:
   name: wordpress-svc
   annotations:
-    metallb.universe.tf/address-pool: default
+    metallb.universe.tf/allow-shared-ip: IPHERE
   labels:
-    app: wordpress-deployment
+    app: wordpress
 spec:
   type: LoadBalancer
   selector:

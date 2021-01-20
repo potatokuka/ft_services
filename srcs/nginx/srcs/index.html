@@ -6,11 +6,16 @@
 	<body>
 		<h1>Welcome to Hell. Also known by services.</h1>
 		<h3>The following services are available:</h3>
-		<a href="http://192.168.99.202:5050">Wordpress</a>
+		<a href="http://${PHPMYADMIN_SVC}:5000">PHPMyAdmin</a>
+		<a href="http://${NGINX_SVC}/phpmyadmin"> Reverse Proxy</a>
 		<p>
 		</p>
-		<a href="http://192.168.99.203:5000">Phpmyadmin</a>
+		<a href="http://${WORDPRESS_SVC}:5050">Wordpress</a>
+		<a href="http://${NGINX_SVC}/wordpress"> 307</a>
 		<p>
 		</p>
-	</body>
+		<a href="http://${GRAFANA_SVC}:3000">Grafana</a>
+		<p>
+		</p>
+		</body>
 </html>

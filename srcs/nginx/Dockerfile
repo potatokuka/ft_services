@@ -2,11 +2,15 @@ FROM alpine:3.12
 
 LABEL maintainer greed
 
-RUN		apk update --no-cache && \
-		apk upgrade --no-cache && \
-		apk add --no-cache nginx \
-		openssh \
-		supervisor
+RUN apk update --no-cache && \
+	apk upgrade --no-cache && \
+	apk add --no-cache nginx \
+	jq \
+	curl \
+	gettext \
+	openssh \
+	supervisor \
+	vim
 
 RUN adduser -D -g 'www' www && \
 		mkdir /www && \
@@ -16,8 +20,8 @@ RUN adduser -D -g 'www' www && \
 
 RUN ssh-keygen -A
 
-COPY srcs/nginx.conf /etc/nginx/conf.d/default.conf
-COPY srcs/index.html /www/index.html
+COPY srcs/nginx.conf /tmp/default.conf
+COPY srcs/index.html /tmp/index.html
 COPY srcs/nginx.cert /etc/ssl/services.crt
 COPY srcs/nginx.key /etc/ssl/services.key
 COPY srcs/supervisord.conf /etc/supervisord.conf

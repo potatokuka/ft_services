@@ -48,18 +48,16 @@ stringData:
 apiVersion: v1
 kind: Service
 metadata:
-  creationTimestamp: null
+  annotations:
+    metallb.universe.tf/allow-shared-ip: IPHERE
+  name: grafana-svc
   labels:
     app: grafana
-  name: grafana-svc
 spec:
   ports:
-  - name: grafana
+  - name: grafana-port
     port: 3000
-    protocol: TCP
     targetPort: 3000
   selector:
     app: grafana
   type: LoadBalancer
-status:
-  loadBalancer: {}

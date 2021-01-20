@@ -2,7 +2,7 @@ curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.pha
 chown -R www:www /var/lib/nginx
 chown -R www:www /www
 
-. /tmp/get_external_ip.sh EXTERNAL_IP wordpress-svc
+. /tmp/get_external-ip-address.sh EXTERNAL_IP wordpress-svc
 
 envsubst '${DB_NAME} ${DB_USER} ${DB_PASSWORD} ${DB_HOST} ${EXTERNAL_IP}' < /tmp/wp-config.php > /www/wp-config.php
 rm /tmp/wp-config.php

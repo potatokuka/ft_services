@@ -1,54 +1,159 @@
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  creationTimestamp: null
-  labels:
-    app: nginx
-  name: nginx
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: nginx
-  strategy: {}
-  template:
-    metadata:
-      creationTimestamp: null
-      labels:
-        app: nginx
-    spec:
-      containers:
-      - image: nginx
-        name: nginx
-        imagePullPolicy: Never
-        resources: {}
-status: {}
----
+# apiVersion: v1
+# kind: Secret
+# metadata:
+#   name: ssh-secret
+# type: Opaque
+# stringData:
+#   SSH_USERNAME: user
+#   SSH_PASSWORD: pass
+# ---
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: nginx
+#   labels:
+#     app: nginx
+# spec:
+#   selector:
+#     matchLabels:
+#       app: nginx
+#   template:
+#     metadata:
+#       labels:
+#         app: nginx
+#     spec:
+#       containers:
+#       - name: nginx
+#         image: nginx
+#         ports:
+#         - name: http
+#           containerPort: 80
+#         - name: https
+#           containerPort: 443
+#         - name: ssh
+#           containerPort: 22
+#         imagePullPolicy: Never
+#         envFrom:
+#         - secretRef:
+#             name: ssh-secret
+#         livenessProbe:
+#           exec:
+#             command:
+#             - sh
+#             - -c
+#             - /tmp/liveness.sh
+#           initialDelaySeconds: 15
+#           periodSeconds: 5
+
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   creationTimestamp: null
+#   labels:
+#     app: nginx
+#   name: nginx
+# spec:
+#   replicas: 1
+#   selector:
+#     matchLabels 
+#       app: nginx
+#   strategy: {}
+#   template:
+#     metadata:
+#       creationTimestamp: null
+#       labels:
+#         app: nginx
+#     spec:
+#       containers:
+#       - image: nginx
+#         name: nginx
+#         imagePullPolicy: Never
+#         resources: {}
+# status: {}
+# ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   annotations:
+#     metallb.universe.tf/allow-shared-ip: IPHERE
+#   name: nginx-svc
+#   labels:
+#     app: nginx
+# spec:
+#   ports:
+#   - name: http
+#     port: 80
+#     targetPort: 80
+#   - name: https
+#     port: 443
+#     targetPort: 443
+#   - name: ssh
+#     port: 22
+#     targetPort: 22
+#   selector:
+#     app: nginx
+#   type: LoadBalancer
 apiVersion: v1
 kind: Service
 metadata:
   annotations:
-    metallb.universe.tf/address-pool: default
-  creationTimestamp: null
+    metallb.universe.tf/allow-shared-ip: IPHERE
+  name: nginx-svc
   labels:
     app: nginx
-  name: nginx
 spec:
   ports:
   - name: http
     port: 80
-    protocol: TCP
     targetPort: 80
   - name: https
     port: 443
+    targetPort: 443
+  - name: ssh
+    port: 22
+    targetPort: 22
   selector:
     app: nginx
   type: LoadBalancer
-status:
-  loadBalancer: {}
-
 ---
-
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx
+  labels:
+    app: nginx
+spec:
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx
+        ports:
+        - name: http
+          containerPort: 80
+        - name: https
+          containerPort: 443
+        - name: ssh
+          containerPort: 22
+        imagePullPolicy: Never
+        envFrom:
+        - secretRef:
+            name: ssh-secret
+        livenessProbe:
+          exec:
+            command:
+            - sh
+            - -c
+            - /tmp/liveness.sh
+          initialDelaySeconds: 120
+          periodSeconds: 5
+---
 apiVersion: v1
 kind: Secret
 metadata:

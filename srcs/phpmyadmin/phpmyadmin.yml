@@ -3,19 +3,31 @@ kind: Service
 metadata:
   name: phpmyadmin-svc
   annotations:
-    metallb.universe.tf/address-pool: default
+    metallb.universe.tf/allow-shared-ip: IPHERE
   labels:
-    app: phpmyadmin-deployment
+    app: phpmyadmin
 spec:
   type: LoadBalancer
   selector:
     app: phpmyadmin-deployment
   ports:
-  - port: 5000
+  - name: phpmyadmin-port
+    port: 5000
     targetPort: 5000
-
 ---
-
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: phpmyadmin-pv-claim
+  labels:
+    app: phpmyadmin-deployment
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -44,16 +56,3 @@ spec:
         persistentVolumeClaim:
           claimName: phpmyadmin-pv-claim
 
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: phpmyadmin-pv-claim
-  labels:
-    app: phpmyadmin-deployment
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 1Gi

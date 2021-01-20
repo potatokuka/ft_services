@@ -4,7 +4,7 @@ LABEL maintainer greed
 
 RUN apk update --no-cache && \
 	apk upgrade --no-cache && \
-	apk add grafana --no-cache --repository http://dl-3.alpinelinux.org/alpine/edge/testing/ \
+	apk add grafana --no-cache --repository http://dl-2.alpinelinux.org/alpine/edge/community/ \
 	sed \
 	curl
 

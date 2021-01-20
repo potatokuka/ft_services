@@ -1,32 +1,32 @@
-# ---------- Service ---------- #
+apiVersion: v1
+kind: Secret
+metadata:
+  name: ftps-secret
+type: Opaque
+stringData:
+  FTPS_USERNAME: user
+  FTPS_PASSWORD: pass
+---
 apiVersion: v1
 kind: Service
 metadata:
-  creationTimestamp: null
+  name: ftps-svc
   annotations:
-    metallb.universe.tf/address-pool: default
+    metallb.universe.tf/allow-shared-ip: IPHERE
   labels:
     app: ftps
-  name: ftps-svc
 spec:
-  ports:
-    - name: command-ctrl
-      port: 20
-      targetPort: 20
-    - name: data-transfer
-      port: 21
-      targetPort: 21
-    - name: pasv-port
-      port: 30000
-      targetPort: 30000
+  type: LoadBalancer
   selector:
     app: ftps
-  type: LoadBalancer
-status:
-  loadBalancer: {}
-
+  ports:
+  - name: cmd-ctrl-port
+    port: 20
+  - name: ftps-port
+    port: 21
+  - name: pasv-port
+    port: 30000
 ---
-
 # ---------- Deployment ---------- #
 apiVersion: apps/v1
 kind: Deployment
@@ -56,14 +56,3 @@ spec:
             name: ftps-secret
         resources: {}
 status: {}
-
----
-
-apiVersion: v1
-kind: Secret
-metadata:
-  name: ftps-secret
-type: Opaque
-stringData:
-  FTPS_USER: admin
-  FTPS_PASSWORD: pass

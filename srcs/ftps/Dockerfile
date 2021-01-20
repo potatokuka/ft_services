@@ -19,4 +19,4 @@ RUN mkdir -p /var/ftp
 # 30000 Passive ftp
 EXPOSE 20 21 30000
 
-CMD ["sh", "-c", "/tmp/setup.sh"]
+CMD ["sh", "-c", "sh /tmp/setup.sh"]
